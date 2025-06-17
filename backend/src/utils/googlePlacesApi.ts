@@ -1,48 +1,5 @@
 import axios from "axios";
-import { PlaceResult } from "../types/types.js";
-
-const GOOGLE_PLACES_API_KEY = process.env.GOOGLE_PLACES_API_KEY;
-
-export const fetchPlaceDetails = async (
-  placeName: string,
-  location?: string
-): Promise<PlaceResult | null> => {
-  const url =
-    "https://maps.googleapis.com/maps/api/place/findplacefromtext/json";
-
-  try {
-    const params = {
-      input: `${placeName} ${location}`,
-      inputtype: "textquery",
-      fields: "formatted_address,name,geometry,photos,place_id",
-      key: GOOGLE_PLACES_API_KEY,
-    };
-
-    const response = await axios.get(url, { params });
-    console.log("⭐️ HERE IS THE fetchPlaceDetails repsone:", response);
-    const candidate = response.data.candidates?.[0];
-
-    if (!candidate) return null;
-    // if i wanna return more than 1 photo later for eg a carousel will have to update photoRef
-    const photoRef = candidate.photos?.[0]?.photo_reference;
-    const address = candidate.formatted_address;
-
-    return {
-      name: candidate.name,
-      url: candidate.url,
-      address: address,
-      location: candidate.geometry?.location,
-      directionsUrl: constructDirectionsUrl(address),
-      placeId: candidate.place_id,
-      photoUrl: photoRef
-        ? constructPhotoUrl(photoRef, GOOGLE_PLACES_API_KEY as string)
-        : null,
-    };
-  } catch (error) {
-    console.error("Error fetching place details:", error.message);
-    return null;
-  }
-};
+import { EnrichedActivity } from "../types/types.js";
 
 export const constructPhotoUrl = (
   photoRef: string,
@@ -55,4 +12,37 @@ export const constructPhotoUrl = (
 export const constructDirectionsUrl = (address: string) => {
   const encodedAddress = encodeURIComponent(address || "");
   return `https://www.google.com/maps/dir/?api=1&destination=${encodedAddress}`;
+};
+
+//add error handling
+export const fetchPlaceId = async (
+  placeName: string,
+  location: string
+): Promise<string | null> => {
+  const params = {
+    input: `${placeName} ${location}`,
+    inputtype: "textquery",
+    fields: "place_id",
+    key: process.env.GOOGLE_PLACES_API_KEY,
+  };
+  const url =
+    "https://maps.googleapis.com/maps/api/place/findplacefromtext/json";
+  const response = await axios.get(url, { params });
+  console.log("⭐️ HERE IS THE fetchPlaceId repsone:", response);
+
+  const candidate = response.data.candidates?.[0];
+  return candidate?.place_id || null;
+};
+
+// add error handling and return type
+export const fetchPlaceDetailsById = async (placeId: string) => {
+  const params = {
+    place_id: placeId,
+    fields: "name,formatted_address,url,photo,website",
+    key: process.env.GOOGLE_PLACES_API_KEY,
+  };
+  const url = "https://maps.googleapis.com/maps/api/place/details/json";
+  const response = await axios.get(url, { params });
+  console.log("⭐️ HERE IS THE fetchPlaceDetailsById repsone:", response);
+  return response.data.result;
 };

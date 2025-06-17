@@ -1,15 +1,27 @@
+import z from "zod";
+import { itineraryRequestSchema } from "../itineraryRequestSchema.js";
+
 export interface Activity {
+  title: string;
   name: string;
   description: string;
   location: string;
-  link: string | null;
 }
 
 export interface EnrichedActivity extends Activity {
-  googleAddress: string | null;
-  coordinates: { lat: number; lng: number } | null;
-  photoReference: string | null;
-  googlePlaceId: string | null;
+  googleAddress: string;
+  url: string | null;
+  photoUrl: string | null;
+  website: string | null;
+  googleMapsUrl: string | null;
+}
+
+export interface GooglePlaceDetails {
+  name: string;
+  formatted_address: string | null;
+  url: string | null;
+  photos?: { photo_reference: string }[];
+  website: string | null;
 }
 
 export interface ItineraryDay {
@@ -19,12 +31,11 @@ export interface ItineraryDay {
   evening?: Activity[];
 }
 
-export interface PlaceResult {
-  name: string;
-  url: string;
-  address: string;
-  directionsUrl: string;
-  location: { lat: number; lng: number };
-  placeId: string;
-  photoUrl?: string | null;
+export interface EnrichedItineraryDay {
+  day: string;
+  morning?: EnrichedActivity[];
+  afternoon?: EnrichedActivity[];
+  evening?: EnrichedActivity[];
 }
+
+export type ItineraryRequest = z.infer<typeof itineraryRequestSchema>;
