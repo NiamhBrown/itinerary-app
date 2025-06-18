@@ -1,3 +1,4 @@
+import { ItineraryDayCard } from "../../components/ItineraryDayCard";
 import type { ItineraryResponse } from "../tripForm/types";
 
 interface Props {
@@ -6,11 +7,16 @@ interface Props {
 export const Itinerary = ({ itinerary }: Props) => {
   console.log("❤️INSIDE ITINERARY COMP!!! Itinerary data:", itinerary);
   return (
-    <>
-      <p>{itinerary?.enrichedItinerary[0].day}</p>
-      <p>{itinerary.enrichedItinerary[0]?.morning?.[0]?.name}</p>
-      <p>{itinerary.enrichedItinerary[0]?.morning?.[0]?.description}</p>
-      <p>{itinerary.enrichedItinerary[0]?.afternoon?.[0]?.website}</p>
-    </>
+    <section id="itinerary-results" className="space-y-8">
+      <h2
+        className="text-3xl font-bold text-center text-stone-800 mb-8"
+        style={{ fontFamily: "'Playfair Display', serif" }}
+      >
+        Your Custom Itinerary
+      </h2>
+      {itinerary.enrichedItinerary.map((dailyItinerary, index) => (
+        <ItineraryDayCard key={index} dailyItinerary={dailyItinerary} />
+      ))}
+    </section>
   );
 };

@@ -10,18 +10,17 @@ import { FormField } from "../../components/FormField";
 import { InterestsFormField } from "../../components/InterestsFormField";
 
 export const TripForm = () => {
-  // const [itinerary, setItinerary] = useState(dummyItinerary);
+  // const [itinerary, setItinerary] = useState<ItineraryResponse>(dummyItinerary);
   const [itinerary, setItinerary] = useState<ItineraryResponse>();
   const {
     register,
     setValue,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting, isLoading },
   } = useForm<TripFormInputs>({
     resolver: zodResolver(itineraryRequestSchema),
   });
 
-  //move this to file later
   const onSubmit = async (data: TripFormInputs) => {
     console.log("📝 Form data:", data);
     try {
@@ -54,7 +53,7 @@ export const TripForm = () => {
           Tell us about your dream trip, and we'll craft a personalized
           itinerary just for you!
         </p>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <FormField
               label="Destination"
@@ -104,7 +103,23 @@ export const TripForm = () => {
           </button>
         </form>
       </section>
+      {isLoading && !itinerary && (
+        <div className="text-center py-10">
+          <LoadingSpinner className="w-12 h-12 mx-auto text-[#E94E1B]" />
+          <p className="mt-4 text-lg text-stone-600">
+            Creating your itinerary... this might take a moment!
+          </p>
+        </div>
+      )}
       {itinerary && <Itinerary itinerary={itinerary} />}
+
+      {/* this section isnt showing up currently */}
+      {!isLoading && !itinerary && !errors && (
+        <div className="text-center py-10 text-stone-500">
+          <p className="text-xl">Your adventure awaits!</p>
+          <p>Fill out the form above to get started.</p>
+        </div>
+      )}
     </>
   );
 };
