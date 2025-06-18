@@ -1,14 +1,47 @@
 import type z from "zod";
-import type { tripFormSchema } from "./tripFormSchema";
+import type { itineraryRequestSchema } from "./tripFormSchema";
 
-export type TripFormInputs = z.infer<typeof tripFormSchema>;
+export type TripFormInputs = z.infer<typeof itineraryRequestSchema>;
 
-export interface ItineraryItem {
-  day: string;
+// copied from backend
+export interface Activity {
+  title: string;
   name: string;
   description: string;
   location: string;
-  startTime: string;
-  link: string | null;
-  imageUrl: string;
 }
+
+export interface EnrichedActivity extends Activity {
+  googleAddress: string;
+  url: string | null;
+  photoUrl: string | null;
+  website: string | null;
+  googleMapsUrl: string | null;
+  googlePlaceId: string | null;
+}
+
+export interface GooglePlaceDetails {
+  name: string;
+  formatted_address: string | null;
+  url: string | null;
+  photos?: { photo_reference: string }[];
+  website: string | null;
+}
+
+export interface ItineraryDay {
+  day: string;
+  morning?: Activity[];
+  afternoon?: Activity[];
+  evening?: Activity[];
+}
+
+export interface EnrichedItineraryDay {
+  day: string;
+  morning?: EnrichedActivity[];
+  afternoon?: EnrichedActivity[];
+  evening?: EnrichedActivity[];
+}
+
+export type ItineraryResponse = {
+  enrichedItinerary: EnrichedItineraryDay[];
+};

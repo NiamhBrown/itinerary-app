@@ -14,6 +14,7 @@ export interface EnrichedActivity extends Activity {
   photoUrl: string | null;
   website: string | null;
   googleMapsUrl: string | null;
+  googlePlaceId: string | null;
 }
 
 export interface GooglePlaceDetails {
