@@ -46,6 +46,10 @@ router.post(
           { role: "user", content: userPrompt },
         ],
       });
+      console.log(
+        "🔎 Raw OpenAI response:",
+        response.choices[0].message.content
+      );
       const itinerary: ItineraryDay[] = JSON.parse(
         response.choices[0].message.content
       );
