@@ -26,7 +26,9 @@ export const TripForm = () => {
     setIsLoading(true);
     console.log("📝 Form data:", data);
     try {
-      const res = await fetch("http://localhost:3000/generate-itinerary", {
+      // "http://localhost:3000/generate-itinerary"
+      const apiUrl = import.meta.env.VITE_API_URL;
+      const res = await fetch(`${apiUrl}/generate-itinerary`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),

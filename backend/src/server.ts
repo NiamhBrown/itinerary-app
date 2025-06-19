@@ -11,5 +11,7 @@ app.use(express.json());
 app.use("/", itineraryRoutes);
 
 app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
+  console.log(
+    `✅ Server running at http://localhost:${PORT} (local) or via render URL in production.`
+  );
 });
