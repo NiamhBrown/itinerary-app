@@ -26,7 +26,7 @@ export const FormField: React.FC<FormFieldProps> = ({
         htmlFor={name}
         className="block text-sm font-medium text-stone-700 mb-1"
       >
-        {label} {required && <span className="text-[#E94E1B]">*</span>}
+        {label} {required && <span className="text-[#f48db4]">*</span>}
       </label>
       <input
         {...register(name)}
@@ -35,7 +35,7 @@ export const FormField: React.FC<FormFieldProps> = ({
         id={name}
         placeholder={placeholder}
         required={required}
-        className="mt-1 block w-full px-4 py-2.5 bg-white border border-stone-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#E94E1B] focus:border-[#E94E1B] sm:text-sm placeholder-stone-400"
+        className="mt-1 block w-full px-4 py-2.5 bg-white border border-stone-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#f48db4] focus:border-[#f48db4] sm:text-sm placeholder-stone-400"
       />
       {/* make sure errs not dislayed somehwere else too */}
       {error && <p className="text-red-500 text-sm mt-1">{error}</p>}

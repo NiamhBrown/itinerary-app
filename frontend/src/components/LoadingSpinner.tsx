@@ -5,7 +5,7 @@ interface LoadingSpinnerProps {
 }
 
 const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
-  className = "w-8 h-8 text-[#E94E1B]",
+  className = "w-8 h-8 text-[#f48db4]",
 }) => {
   return (
     <svg

@@ -1,14 +1,13 @@
 import React from "react";
 
-// A simple SVG logo placeholder
 const Logo: React.FC = () => (
   <svg
-    width="40"
-    height="40"
+    width="50"
+    height="50"
     viewBox="0 0 24 24"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
-    className="text-[#E94E1B]"
+    className="text-[#007944]"
   >
     <path
       d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"
@@ -30,14 +29,14 @@ export const Header: React.FC = () => {
       <div className="flex items-center space-x-3">
         <Logo />
         <h1
-          className="text-4xl sm:text-5xl font-bold text-center text-stone-800"
+          className="text-4xl sm:text-5xl font-bold text-center text-[#007944]"
           style={{ fontFamily: "'Playfair Display', serif" }}
         >
-          AI Trip Planner
+          Travel Planner
         </h1>
       </div>
       <p className="mt-2 text-md text-stone-600 text-center">
-        Your Personal AI Travel Genie ✨
+        ✨ You chose the destination, we'll design the trip ✨
       </p>
     </header>
   );
