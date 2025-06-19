@@ -12,16 +12,18 @@ import { InterestsFormField } from "../../components/InterestsFormField";
 export const TripForm = () => {
   // const [itinerary, setItinerary] = useState<ItineraryResponse>(dummyItinerary);
   const [itinerary, setItinerary] = useState<ItineraryResponse>();
+  const [isLoading, setIsLoading] = useState(false);
   const {
     register,
     setValue,
     handleSubmit,
-    formState: { errors, isSubmitting, isLoading },
+    formState: { errors, isSubmitting },
   } = useForm<TripFormInputs>({
     resolver: zodResolver(itineraryRequestSchema),
   });
 
   const onSubmit = async (data: TripFormInputs) => {
+    setIsLoading(true);
     console.log("📝 Form data:", data);
     try {
       const res = await fetch("http://localhost:3000/generate-itinerary", {
@@ -44,14 +46,14 @@ export const TripForm = () => {
         className="bg-white/80 backdrop-blur-md shadow-xl rounded-xl p-6 sm:p-8 mb-12 border border-stone-200"
       >
         <h2
-          className="text-3xl font-bold text-center text-stone-800 mb-2"
+          className="text-3xl font-bold text-center text-[#007944] mb-2"
           style={{ fontFamily: "'Playfair Display', serif" }}
         >
           Plan Your Next Adventure
         </h2>
         <p className="text-center text-stone-600 mb-8">
-          Tell us about your dream trip, and we'll craft a personalized
-          itinerary just for you!
+          Tell us about your dream trip, and we'll create an itinerary just for
+          you!
         </p>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -61,11 +63,11 @@ export const TripForm = () => {
               type="text"
               register={register}
               error={errors.destination?.message}
-              placeholder="e.g., Paris, France"
+              placeholder="e.g., Paris, London"
               required
             />
             <InterestsFormField
-              placeholder="e.g, Food, Partying, Walking"
+              placeholder="e.g, Vegan food, Partying, Walking"
               setValue={setValue}
             />
           </div>
@@ -90,7 +92,7 @@ export const TripForm = () => {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full flex items-center justify-center bg-[#E94E1B] hover:bg-[#d04518] text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed text-lg shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-[#E94E1B] focus:ring-opacity-50"
+            className="w-full flex items-center justify-center bg-[#f48db4] hover:bg-[#007944] text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed text-lg shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-[#f48db4] focus:ring-opacity-50"
           >
             {isSubmitting ? (
               <>
@@ -103,23 +105,16 @@ export const TripForm = () => {
           </button>
         </form>
       </section>
+
       {isLoading && !itinerary && (
         <div className="text-center py-10">
-          <LoadingSpinner className="w-12 h-12 mx-auto text-[#E94E1B]" />
-          <p className="mt-4 text-lg text-stone-600">
+          <LoadingSpinner className="w-12 h-12 mx-auto text-[#f48db4]" />
+          <p className="mt-4 text-lg text-[#007944]">
             Creating your itinerary... this might take a moment!
           </p>
         </div>
       )}
       {itinerary && <Itinerary itinerary={itinerary} />}
-
-      {/* this section isnt showing up currently */}
-      {!isLoading && !itinerary && !errors && (
-        <div className="text-center py-10 text-stone-500">
-          <p className="text-xl">Your adventure awaits!</p>
-          <p>Fill out the form above to get started.</p>
-        </div>
-      )}
     </>
   );
 };

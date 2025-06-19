@@ -55,9 +55,9 @@ export const ItineraryDayCard = ({ dailyItinerary }: ItineraryDayCardProps) => {
   return (
     <>
       <div className="bg-white shadow-lg rounded-xl overflow-hidden border border-stone-200/80 transition-all duration-300 hover:shadow-xl">
-        <div className="p-5 sm:p-6 bg-gradient-to-r from-orange-50 to-amber-50">
+        <div className="p-5 sm:p-6 bg-[#f48db4] bg-opacity-10">
           <h3
-            className="text-2xl font-semibold text-[#E94E1B] flex items-center"
+            className="text-2xl font-semibold text-[#007944] flex items-center"
             style={{ fontFamily: "'Playfair Display', serif" }}
           >
             {day}
