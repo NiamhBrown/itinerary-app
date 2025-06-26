@@ -1,5 +1,5 @@
 import z from "zod";
-import { itineraryRequestSchema } from "../itineraryRequestSchema.js";
+import { itineraryRequestSchema } from "../schemas/itineraryRequestSchema.js";
 
 export interface Activity {
   title: string;
