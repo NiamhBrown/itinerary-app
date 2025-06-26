@@ -13,6 +13,7 @@ export const TripForm = () => {
   // const [itinerary, setItinerary] = useState<ItineraryResponse>(dummyItinerary);
   const [itinerary, setItinerary] = useState<ItineraryResponse>();
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<boolean | null>(null);
   const {
     register,
     setValue,
@@ -26,9 +27,9 @@ export const TripForm = () => {
     setIsLoading(true);
     console.log("📝 Form data:", data);
     try {
-      // "http://localhost:3000/generate-itinerary"
+      // http://localhost:3000/itinerary/generate-itinerary
       const apiUrl = import.meta.env.VITE_API_URL;
-      const res = await fetch(`${apiUrl}/generate-itinerary`, {
+      const res = await fetch(`${apiUrl}/itinerary/generate-itinerary`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
@@ -38,6 +39,7 @@ export const TripForm = () => {
       console.log("✅ Response data:", resData);
       setItinerary(resData);
     } catch (error) {
+      setError(true);
       console.error("❌ Submission error:", error);
     }
   };
@@ -96,7 +98,7 @@ export const TripForm = () => {
             disabled={isSubmitting}
             className="w-full flex items-center justify-center bg-[#f48db4] hover:bg-[#007944] text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed text-lg shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-[#f48db4] focus:ring-opacity-50"
           >
-            {isSubmitting ? (
+            {isSubmitting && !error ? (
               <>
                 <LoadingSpinner className="w-5 h-5 mr-2 animate-spin" />
                 Generating Itinerary...
@@ -108,13 +110,19 @@ export const TripForm = () => {
         </form>
       </section>
 
-      {isLoading && !itinerary && (
+      {isLoading && !error && !itinerary && (
         <div className="text-center py-10">
           <LoadingSpinner className="w-12 h-12 mx-auto text-[#f48db4]" />
           <p className="mt-4 text-lg text-[#007944]">
             Creating your itinerary... this might take a moment!
           </p>
         </div>
+      )}
+      {error && (
+        <p className="mt-4 text-lg text-[#007944]">
+          😢 Something went wrong while generating your itinerary. Please try
+          again later.
+        </p>
       )}
       {itinerary && <Itinerary itinerary={itinerary} />}
     </>
